@@ -1,1 +1,2 @@
-# Booking
+# booking
+Booking - Training site
