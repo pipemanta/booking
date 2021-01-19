@@ -41,7 +41,7 @@ services:
       MYSQL_PASSWORD: M!Aq12xjcDtLT#Zw
       MYSQL_ROOT_PASSWORD: 'secret'
     volumes:
-      - db9:/var/lib/mysql
+      - db:/var/lib/mysql
       - './.docker/provision-db.sh:/tmp/provision-db.sh'
     ports:
       - "0.0.0.0:13309:3306"
