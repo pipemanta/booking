@@ -2,10 +2,10 @@
 class Database{
 
     // specify your own database credentials
-    private $host = "localhost";
+    private $host = "db";
     private $db_name = "booking_db";
-    private $username = "root";
-    private $password = "";
+    private $username = "booking-user";
+    private $password = "M!Aq12xjcDtLT#Zw";
     public $conn;
 
     // get the database connection
