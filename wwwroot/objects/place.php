@@ -1,5 +1,7 @@
 <?php
-class Product{
+
+class Place
+{
 
     // database connection and table name
     private $conn;
@@ -13,26 +15,22 @@ class Product{
     public $category_id;
     public $timestamp;
 
-    public function __construct($db){
+    public function __construct(PDO $db)
+    {
         $this->conn = $db;
     }
 
-    // create product
-    function create(){
+    // create place
+    function create()
+    {
 
         //write query
-        $query = "INSERT INTO
-                    " . $this->table_name . "
-                SET
-                    name=:name, price=:price, description=:description, category_id=:category_id, created=:created";
+        $query = sprintf("INSERT INTO %s SET
+                    name=:name, price=:price, description=:description, category_id=:category_id, created=:created",
+            $this->table_name);
 
+        /** @var PDOStatement $stmt */
         $stmt = $this->conn->prepare($query);
-
-        // posted values
-        $this->name=htmlspecialchars(strip_tags($this->name));
-        $this->price=htmlspecialchars(strip_tags($this->price));
-        $this->description=htmlspecialchars(strip_tags($this->description));
-        $this->category_id=htmlspecialchars(strip_tags($this->category_id));
 
         // to get time-stamp for 'created' field
         $this->timestamp = date('Y-m-d H:i:s');
@@ -44,12 +42,13 @@ class Product{
         $stmt->bindParam(":category_id", $this->category_id);
         $stmt->bindParam(":created", $this->timestamp);
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             return true;
-        }else{
-            return false;
+        } else {
+            $error = $stmt->errorInfo();
+//            var_dump($error);
+            return $error[2];
         }
 
     }
 }
-?>
