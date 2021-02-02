@@ -32,14 +32,21 @@ include_once "layout_header.php";
                 // construct empty object of type place with db connection
                 $place = new Place($db);
 
-                $place->name = htmlspecialchars(strip_tags($_POST['name']));
-                $place->price = htmlspecialchars(strip_tags($_POST['price']));
+                $place->name = strlen($_POST['name'])? htmlspecialchars(strip_tags($_POST['name'])) : null;
+                // strlen($_POST['name'])? = empty string are not null by default, just empty string, needs to be defined as null
                 $place->description = htmlspecialchars(strip_tags($_POST['description']));
                 $place->category_id = htmlspecialchars(strip_tags($_POST['category_id']));
+                $place->rooms = htmlspecialchars(strip_tags($_POST['rooms']));
+                $place->toilets = htmlspecialchars(strip_tags($_POST['toilets']));
+                $place->price = htmlspecialchars(strip_tags($_POST['price']));
 
                 // create the place
                 $created = $place->create();
                 if(is_bool($created) && $created){
+                    $_POST = [];
+
+                    // [] is the same as array() !!!
+
                     echo "<div class='alert alert-success'>Place was created.</div>";
                 }
 
@@ -97,7 +104,7 @@ include_once "layout_header.php";
 
                     <tr>
                         <td>Name</td>
-                        <td><input type='text' name='name' class='form-control' required='required' value="<?php echo $_POST['name'];?>" /><span class="error">* <?php echo $nameErr;?></span></td>
+                        <td><input type='text' name='name' class='form-control' required value="<?php echo $_POST['name'];?>" /><span class="error">* <?php echo $nameErr;?></span></td>
                     </tr>
 
                     <tr>
@@ -130,17 +137,17 @@ include_once "layout_header.php";
 
                     <tr>
                         <td>Rooms</td>
-                        <td><input type='number' name='rooms' class='form-control' required='required' value="<?php echo $_POST['rooms'];?>" /><span class="error">* <?php echo $roomsErr;?></span></td>
+                        <td><input type='number' name='rooms' class='form-control' required value="<?php echo $_POST['rooms'];?>" /><span class="error">* <?php echo $roomsErr;?></span></td>
                     </tr>
 
                     <tr>
                         <td>Toilets</td>
-                        <td><input type='number' name='toilets' class='form-control' required='required' value="<?php echo $_POST['toilets'];?>" /><span class="error">* <?php echo $toiletsErr;?></span></td>
+                        <td><input type='number' name='toilets' class='form-control' required value="<?php echo $_POST['toilets'];?>" /><span class="error">* <?php echo $toiletsErr;?></span></td>
                     </tr>
 
                     <tr>
                         <td>Price</td>
-                        <td><input type='text' name='price' class='form-control' required='required' value="<?php echo $_POST['price'];?>" /><span class="error">* <?php echo $priceErr;?></span></td>
+                        <td><input type='text' name='price' class='form-control' required value="<?php echo $_POST['price'];?>" /><span class="error">* <?php echo $priceErr;?></span></td>
                     </tr>
 
                     <tr>

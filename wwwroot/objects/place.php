@@ -10,9 +10,11 @@ class Place
     // object properties
     public $id;
     public $name;
-    public $price;
     public $description;
     public $category_id;
+    public $rooms;
+    public $toilets;
+    public $price;
     public $timestamp;
 
     public function __construct(PDO $db)
@@ -26,7 +28,7 @@ class Place
 
         //write query
         $query = sprintf("INSERT INTO %s SET
-                    name=:name, price=:price, description=:description, category_id=:category_id, created=:created",
+                    name=:name, description=:description, category_id=:category_id, rooms=:rooms, toilets=:toilets, price=:price, created=:created",
             $this->table_name);
 
         /** @var PDOStatement $stmt */
@@ -37,18 +39,31 @@ class Place
 
         // bind values
         $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":price", $this->price);
         $stmt->bindParam(":description", $this->description);
         $stmt->bindParam(":category_id", $this->category_id);
+        $stmt->bindParam(":rooms", $this->rooms);
+        $stmt->bindParam(":toilets", $this->toilets);
+        $stmt->bindParam(":price", $this->price);
         $stmt->bindParam(":created", $this->timestamp);
 
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            $error = $stmt->errorInfo();
-//            var_dump($error);
-            return $error[2];
+        var_dump($this);
+
+//        if ($stmt->execute()) {
+//            return true;
+//        } else {
+//            $error = $stmt->errorInfo();
+////            var_dump($error);
+//            return $error[2];
+//        }
+
+        try {
+            $stmt->execute();
+//            var_dump($stmt);
+        } catch (PDOException $exception){
+//            var_dump($exception);
+            return $exception->getMessage();
         }
+        return true;
 
     }
 }
