@@ -14,8 +14,8 @@
     $category = new Category($db);
 
 
-$page_title = "Create place";
-include_once "layout_header.php";
+    $page_title = "Create place";
+    include_once "libs/php/layout_header.php";
 
 ?>
 
@@ -162,5 +162,5 @@ include_once "layout_header.php";
 <?php
 
 // footer
-include_once "layout_footer.php";
+include_once "libs/php/layout_footer.php";
 ?>
