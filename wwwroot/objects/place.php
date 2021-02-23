@@ -27,6 +27,11 @@ class Place
     {
 
         //write query
+//        $query = "INSERT INTO
+//                    " . $this->table_name . "
+//                SET
+//                    name=:name, price=:price, description=:description, category_id=:category_id, created=:created";
+
         $query = sprintf("INSERT INTO %s SET
                     name=:name, description=:description, category_id=:category_id, rooms=:rooms, toilets=:toilets, price=:price, created=:created",
             $this->table_name);
@@ -63,24 +68,22 @@ class Place
     function update(){
 
         //update query
-//        $query = sprintf("INSERT INTO %s SET
-//                    name=:name, description=:description, category_id=:category_id, rooms=:rooms, toilets=:toilets, price=:price, modified=:modified where id=:id",
-//            $this->table_name);
+//        $query = "UPDATE
+//                " . $this->table_name . "
+//            SET
+//                name = :name, price = :price, description = :description, category_id  = :category_id
+//            WHERE
+//                id = :id";
 
-        $query = "UPDATE
-                " . $this->table_name . "
-            SET
-                name = :name,
-                price = :price,
-                description = :description,
-                toilets = :toilets,
-                rooms = :rooms,
-                category_id  = :category_id
-            WHERE
-                id = :id";
+        $query = sprintf("UPDATE %s SET
+                    name=:name, description=:description, category_id=:category_id, rooms=:rooms, toilets=:toilets, price=:price WHERE id=:id",
+            $this->table_name);
 
         /** @var PDOStatement $stmt */
         $stmt = $this->conn->prepare($query);
+
+//        // to get time-stamp for 'created' field
+//        $this->timestamp = date('Y-m-d H:i:s');
 
 //        // bind values
         $stmt->bindParam(":name", $this->name);
@@ -89,7 +92,8 @@ class Place
         $stmt->bindParam(":rooms", $this->rooms);
         $stmt->bindParam(":toilets", $this->toilets);
         $stmt->bindParam(":price", $this->price);
-//        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":id", $this->id);
+//        $stmt->bindParam(":modified", $this->timestamp);
 
 //        var_dump($this);
 
@@ -102,9 +106,9 @@ class Place
 
         try {
             $stmt->execute();
-//            var_dump($stmt);
+            var_dump($stmt);
         } catch (PDOException $exception){
-//            var_dump($exception);
+            var_dump($exception);
             return $exception->getMessage();
         }
 
@@ -127,14 +131,18 @@ class Place
 
     function readAll($from_record_num, $records_per_page){
 
-        $query = "SELECT
-        id, name, description, category_id, rooms, toilets, price
-        FROM
-        " . $this->table_name . "
-        ORDER BY
-        name ASC
-        LIMIT
-        {$from_record_num}, {$records_per_page}";
+//        $query = "SELECT
+//        id, name, description, category_id, rooms, toilets, price
+//        FROM
+//        " . $this->table_name . "
+//        ORDER BY
+//        name ASC
+//        LIMIT
+//        {$from_record_num}, {$records_per_page}";
+
+        $query = sprintf("SELECT 
+                    id, name, description, category_id, rooms, toilets, price FROM $this->table_name ORDER BY %s ASC LIMIT {$from_record_num}, {$records_per_page}",
+        'name');
 
         $stmt = $this->conn->prepare( $query );
         $stmt->execute();
@@ -144,14 +152,18 @@ class Place
 
     function readOne(){
 
-        $query = "SELECT
-                name, description, category_id, rooms, toilets, price
-            FROM
-                " . $this->table_name . "
-            WHERE
-                id = ?
-            LIMIT
-                0,1";
+//        $query = "SELECT
+//                name, description, category_id, rooms, toilets, price
+//            FROM
+//                " . $this->table_name . "
+//            WHERE
+//                id = ?
+//            LIMIT
+//                0,1";
+
+        $query = sprintf("SELECT 
+                    name, description, category_id, rooms, toilets, price FROM $this->table_name WHERE id=%s LIMIT 0,1",
+            '?');
 
         $stmt = $this->conn->prepare( $query );
         $stmt->bindParam(1, $this->id);
