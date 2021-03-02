@@ -115,7 +115,7 @@ include_once "libs/php/layout_header.php";
     
                     <tr>
                         <td>Rooms</td>
-                        <td><input type='number' name='rooms' class='form-control' required value='<?php echo $place->rooms; ?>' /><span class="error">* <?php echo $roomsErr;?></span></td>
+                        <td><input type='number' name='rooms' class='form-control'  value='<?php echo $place->rooms; ?>' /><span class="error">* <?php echo $roomsErr;?></span></td>
                     </tr>
     
                     <tr>
